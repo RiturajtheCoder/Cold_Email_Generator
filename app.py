@@ -126,7 +126,7 @@ def sidebar() -> None:
     )
     st.sidebar.markdown("### How it works")
     st.sidebar.write("1. Fill the form\n2. Submit once\n3. Review analysis and email")
-    st.sidebar.markdown("### Settings")
+    #st.sidebar.markdown("### Settings")
     #st.sidebar.write(f"API configured: {'Yes' if is_api_key_configured() else 'No'}")
     #st.sidebar.write(f"API status: {get_api_status()}")
 
