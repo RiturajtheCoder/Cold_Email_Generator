@@ -6,11 +6,9 @@ from src.gemini_client import get_api_status, get_client, is_api_key_configured
 from src.prompts import EMAIL_TONE_OPTIONS, EMAIL_LENGTH_OPTIONS
 from src.url_state import apply_query_params, build_shareable_query_params
 from src.utils import (
-    as_clean_list,
     copy_button_html,
     format_word_count,
     init_session_state,
-    parse_multiline_items,
     safe_truncate,
 )
 
@@ -132,7 +130,7 @@ def sidebar() -> None:
     st.sidebar.write("1. Fill the form\n2. Submit once\n3. Review analysis, email, and shareable URL")
     st.sidebar.markdown("### Settings")
     st.sidebar.write(f"API configured: {'Yes' if is_api_key_configured() else 'No'}")
-    st.sidebar.write(f"API status: {get_api_status()}")
+    #st.sidebar.write(f"API status: {get_api_status()}")
     st.sidebar.caption("Sensitive candidate data is never added to the shareable URL.")
 
 
@@ -309,8 +307,8 @@ def main() -> None:
             st.session_state.shareable_link = query
         if st.session_state.shareable_link:
             st.code(st.session_state.shareable_link, language="text")
-        st.markdown("### API Status")
-        st.info(get_api_status())
+        #st.markdown("### API Status")
+        #st.info(get_api_status())
         st.markdown("### Current Context")
         st.write(f"Company: {safe_truncate(st.session_state.target.get('company', ''))}")
         st.write(f"Role: {safe_truncate(st.session_state.target.get('role', ''))}")
@@ -382,7 +380,7 @@ def main() -> None:
         else:
             st.write("No generations yet in this session.")
 
-    st.caption("Built for Streamlit Community Cloud. API key is kept in `.env` or `st.secrets`, never in the URL.")
+    st.caption("Made by Rituraj")
 
 
 if __name__ == "__main__":

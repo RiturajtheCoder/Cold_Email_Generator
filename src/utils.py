@@ -16,7 +16,6 @@ def init_session_state() -> None:
         "generated_data": {},
         "generation_history": [],
         "shareable_link": "",
-        "force_mode": "",
     }
     for key, value in defaults.items():
         if key not in st.session_state:
