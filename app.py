@@ -4,9 +4,7 @@ from src.analyzer import analyze_personalization
 from src.email_generator import generate_email_bundle
 from src.gemini_client import get_api_status, get_client, is_api_key_configured
 from src.prompts import EMAIL_TONE_OPTIONS, EMAIL_LENGTH_OPTIONS
-from src.url_state import apply_query_params, build_shareable_query_params
 from src.utils import (
-    copy_button_html,
     format_word_count,
     init_session_state,
     safe_truncate,
@@ -127,11 +125,10 @@ def sidebar() -> None:
         "Generate recruiter-friendly cold emails from your background, target company, and role."
     )
     st.sidebar.markdown("### How it works")
-    st.sidebar.write("1. Fill the form\n2. Submit once\n3. Review analysis, email, and shareable URL")
+    st.sidebar.write("1. Fill the form\n2. Submit once\n3. Review analysis and email")
     st.sidebar.markdown("### Settings")
     st.sidebar.write(f"API configured: {'Yes' if is_api_key_configured() else 'No'}")
-    #st.sidebar.write(f"API status: {get_api_status()}")
-    st.sidebar.caption("Sensitive candidate data is never added to the shareable URL.")
+    st.sidebar.write(f"API status: {get_api_status()}")
 
 
 def render_metrics(scores: dict, word_count: int) -> None:
@@ -167,7 +164,6 @@ def main() -> None:
     init_session_state()
     inject_css()
     sidebar()
-    apply_query_params(st.session_state)
 
     st.markdown(
         """
@@ -286,12 +282,6 @@ def main() -> None:
 
             st.session_state.candidate = candidate
             st.session_state.target = target
-            st.session_state.query_params = {
-                "company": target["company"],
-                "role": target["role"],
-                "tone": target["tone"],
-                "length": target["length"],
-            }
 
             try:
                 run_generation(candidate, target)
@@ -300,20 +290,13 @@ def main() -> None:
 
     with col_right:
         st.markdown('<div class="panel-card">', unsafe_allow_html=True)
-        st.markdown('<div class="section-title">Shareable Link</div>', unsafe_allow_html=True)
-        st.caption("Only non-sensitive fields like company, role, tone, and length are added to the URL.")
-        if st.button("Generate Shareable Link"):
-            query = build_shareable_query_params(st.session_state)
-            st.session_state.shareable_link = query
-        if st.session_state.shareable_link:
-            st.code(st.session_state.shareable_link, language="text")
-        #st.markdown("### API Status")
-        #st.info(get_api_status())
-        st.markdown("### Current Context")
+        st.markdown('<div class="section-title">Current Context</div>', unsafe_allow_html=True)
         st.write(f"Company: {safe_truncate(st.session_state.target.get('company', ''))}")
         st.write(f"Role: {safe_truncate(st.session_state.target.get('role', ''))}")
         st.write(f"Tone: {st.session_state.target.get('tone', '')}")
         st.write(f"Length: {st.session_state.target.get('length', '')}")
+        st.markdown("### API Status")
+        st.info(get_api_status())
         st.markdown("</div>", unsafe_allow_html=True)
 
     if st.session_state.generated_email and st.session_state.analysis:
@@ -362,9 +345,9 @@ def main() -> None:
                     st.rerun()
                 except Exception as exc:
                     st.error(f"Could not improve personalization: {exc}")
-            st.markdown(copy_button_html(st.session_state.generated_email), unsafe_allow_html=True)
+            st.caption("Copy the email manually from the box below.")
 
-        st.markdown(f"<div class='email-box'>{st.session_state.generated_email}</div>", unsafe_allow_html=True)
+        st.code(st.session_state.generated_email, language="text")
 
         st.expander("Why this email works", expanded=False).write(st.session_state.analysis["why_this_works"])
         st.expander("Missing information", expanded=False).write(st.session_state.analysis["missing_information"])

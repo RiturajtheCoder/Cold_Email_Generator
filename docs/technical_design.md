@@ -8,7 +8,6 @@ Build an AI-powered Streamlit application that generates personalized cold email
 
 - Generate recruiter-style networking emails.
 - Keep the UX polished and easy to use.
-- Support shareable URLs for non-sensitive target settings.
 - Avoid hallucinations and preserve user-provided facts.
 
 ## 3. System Architecture
@@ -60,26 +59,17 @@ Pandas stores the match table with columns for resume presence, JD presence, and
 
 Session state keeps candidate data, target data, generated output, scores, and generation history.
 
-## 11. Query Parameter Strategy
-
-Only safe, non-sensitive fields are written to `st.query_params`:
-
-- company
-- role
-- tone
-- length
-
-## 12. Error Handling
+## 11. Error Handling
 
 The app shows friendly Streamlit messages for missing keys, invalid inputs, API errors, and malformed model output.
 
-## 13. Security
+## 12. Security
 
 - API key is never hardcoded.
 - Local secrets use `.env`.
 - Streamlit Cloud secrets use `st.secrets`.
 - Candidate personal data is not placed into the URL.
 
-## 14. Deployment Architecture
+## 13. Deployment Architecture
 
 The project is ready for Streamlit Community Cloud with a minimal dependency set and environment-based configuration.

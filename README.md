@@ -9,7 +9,6 @@ AI-powered personalized networking assistant for internship and entry-level outr
 - Personalization, job-match, and keyword-coverage scores
 - Pandas-based keyword analysis table
 - Session-state history for the current session
-- Shareable URL support with `st.query_params`
 - Safe error handling and fallback generation
 - Streamlit-ready UI with metrics, expanders, and a dashboard layout
 
@@ -30,7 +29,7 @@ See [docs/architecture.md](docs/architecture.md) for the Mermaid diagram and dat
 2. Submit the form.
 3. The app analyzes keyword overlap and personalization strength.
 4. Gemini generates a concise, personalized outreach email.
-5. Review the metrics, email, and shareable URL.
+5. Review the metrics and email.
 
 ## Gemini Integration
 
