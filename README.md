@@ -78,7 +78,7 @@ GEMINI_API_KEY=your_api_key_here
 If deploying on Streamlit Cloud, open the app settings and add the same key in Secrets as:
 
 ```toml
-GEMINI_API_KEY="your_api_key_here"
+GEMINI_API_KEY = "your_api_key_here"
 ```
 
 ## Deployment
@@ -98,4 +98,3 @@ Deploy on Streamlit Community Cloud by connecting the GitHub repository, setting
 - Export to PDF
 - CSV batch generation
 - More detailed analytics
-

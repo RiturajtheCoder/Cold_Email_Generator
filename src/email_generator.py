@@ -10,8 +10,7 @@ def _fallback_email(candidate: dict, target: dict, analysis: dict) -> dict:
     name = candidate.get("name", "there")
     company = target.get("company", "your team")
     role = target.get("role", "the role")
-    tone = target.get("tone", "Professional")
-    intro_skill = analysis.get("matching_skills", [None])[0]
+    intro_skill = (analysis.get("matching_skills") or [None])[0]
     skill_text = f"I've built experience around {intro_skill.lower()}." if intro_skill else "I’d love to bring my background and projects to the role."
     subject_lines = [
         f"Interest in {role} at {company} - {name}",
@@ -61,8 +60,12 @@ def generate_email_bundle(client, candidate: dict, target: dict, analysis: dict,
         if not text:
             raise ValueError("Gemini returned an empty response.")
         subjects, email = _parse_response(text)
-        if len(subjects) < 2:
-            raise ValueError("Gemini output format was not usable.")
+        if not subjects:
+            subjects = [
+                f"Interest in {target.get('role', 'the role')} at {target.get('company', 'the company')}",
+                f"{candidate.get('name', 'Candidate')} | {target.get('role', 'Role')} Interest",
+                f"Exploring Opportunities at {target.get('company', 'the company')}",
+            ]
         word_count = len(email.split())
         analysis["email_word_count"] = word_count
         return {
